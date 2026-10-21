@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Attack KB</title>
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
+<style>
+:root {
+  --bg: #fbfaf8; --panel: #ffffff; --ink: #1d1d1b; --muted: #6b6a66; --line: #e6e3dd;
+  --accent: #2f5d8a; --accent-soft: #e8eff6; --archive: #9a5b00; --archive-soft: #fdf3e2; --code: #f3f1ec;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #141413; --panel: #1c1c1a; --ink: #ecebe7; --muted: #9c9a94; --line: #2e2d2a;
+          --accent: #8db4dc; --accent-soft: #1f2a36; --archive: #e3a94a; --archive-soft: #2a2114; --code: #242320; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif; }
+a { color: var(--accent); }
+header { position: sticky; top: 0; z-index: 2; background: var(--panel); border-bottom: 1px solid var(--line); }
+.bar { max-width: 1040px; margin: 0 auto; padding: 10px 16px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.brand { font-weight: 650; text-decoration: none; color: var(--ink); }
+nav a { text-decoration: none; padding: 4px 10px; border-radius: 6px; color: var(--muted); }
+nav a.on { background: var(--accent-soft); color: var(--accent); }
+nav a.arch.on { background: var(--archive-soft); color: var(--archive); }
+main { max-width: 1040px; margin: 0 auto; padding: 20px 16px 80px; }
+input[type=search], select { font: inherit; padding: 7px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); color: var(--ink); }
+input[type=search] { width: min(420px, 100%); }
+.controls { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+.chip { border: 1px solid var(--line); background: var(--panel); color: var(--muted); border-radius: 999px; padding: 2px 10px; font-size: 13px; cursor: pointer; }
+.chip.on { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+.count { color: var(--muted); font-size: 13px; margin-bottom: 8px; }
+.row { display: block; padding: 11px 12px; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+.row:hover { background: var(--panel); }
+.row .name { font-weight: 560; }
+.meta { color: var(--muted); font-size: 13px; display: flex; gap: 10px; flex-wrap: wrap; margin-top: 2px; }
+.badge { font-size: 12px; padding: 0 7px; border-radius: 5px; background: var(--accent-soft); color: var(--accent); }
+.badge.guide { background: var(--code); color: var(--muted); }
+.badge.pop { background: #fde8e8; color: #9b1c1c; }
+@media (prefers-color-scheme: dark) { .badge.pop { background: #3a1d1d; color: #f2a5a5; } }
+h1 { font-size: 26px; line-height: 1.25; margin: 4px 0 6px; }
+details.sec { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; margin: 10px 0; }
+details.sec > summary { cursor: pointer; padding: 10px 14px; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; list-style: none; }
+details.sec > summary::before { content: "▸"; color: var(--muted); }
+details.sec[open] > summary::before { content: "▾"; }
+.src { font-size: 12px; color: var(--muted); }
+.sec-body { padding: 0 18px 14px; overflow-wrap: anywhere; }
+.sec-body pre { background: var(--code); padding: 10px; border-radius: 8px; overflow-x: auto; }
+.sec-body code { background: var(--code); padding: 1px 4px; border-radius: 4px; font-size: 13px; }
+.sec-body pre code { padding: 0; }
+.sec-body table { border-collapse: collapse; display: block; overflow-x: auto; }
+.sec-body td, .sec-body th { border: 1px solid var(--line); padding: 4px 8px; }
+.archive-box { border: 1px dashed var(--archive); background: var(--archive-soft); border-radius: 10px; padding: 12px 16px; margin-top: 22px; }
+.archive-box h2, .arch-banner b { color: var(--archive); }
+.archive-box h2 { font-size: 16px; margin: 0 0 6px; }
+.arch-banner { border-left: 4px solid var(--archive); background: var(--archive-soft); padding: 8px 12px; border-radius: 6px; margin-bottom: 14px; font-size: 14px; }
+.muted { color: var(--muted); }
+.pager { display: flex; gap: 10px; margin-top: 14px; }
+button { font: inherit; padding: 5px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); color: var(--ink); cursor: pointer; }
+</style>
+</head>
+<body>
+<header><div class="bar">
+  <a class="brand" href="#/">Attack KB</a>
+  <nav><a id="nav-i" href="#/">Attack index</a><a id="nav-a" class="arch" href="#/archive">Archive · pull on demand</a></nav>
+  <span class="muted" style="font-size:13px">API: <a href="/api">/api</a></span>
+</div></header>
+<main id="app">Loading…</main>
+<script>
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const md = (t) => window.marked && window.DOMPurify
+  ? DOMPurify.sanitize(marked.parse(t || ""))
+  : `<pre>${esc(t)}</pre>`;  // offline fallback: plain text, never raw HTML
+const api = (p) => fetch(p).then((r) => r.json());
+const state = { attacks: null, q: "", tag: "", kind: "" };
+
+function nav(which) {
+  $("#nav-i").classList.toggle("on", which === "i");
+  $("#nav-a").classList.toggle("on", which === "a");
+}
+
+function badges(a) {
+  const top = a.popularity.filter((p) => p.startsWith("CWE-Top25-2025") || p.startsWith("OWASP-Top10-2025"));
+  return `<span class="badge ${a.kind === "guide" ? "guide" : ""}">${a.kind}</span>`
+    + top.map((p) => `<span class="badge pop">${esc(p.replace("CWE-", "").replace("-2025", " 2025"))}</span>`).join("")
+    + (a.h1_reports ? `<span>${a.h1_reports} HackerOne reports</span>` : "");
+}
+
+async function viewIndex() {
+  nav("i");
+  state.attacks ??= await api("/api/attacks");
+  const tags = [...new Set(state.attacks.flatMap((a) => a.tags))].sort();
+  $("#app").innerHTML = `
+    <div class="controls">
+      <input type="search" id="q" placeholder="Filter attacks…" value="${esc(state.q)}">
+      <select id="kind"><option value="">attacks + guides</option><option value="attack">attacks only</option><option value="guide">guides only</option></select>
+    </div>
+    <div class="chips">${tags.map((t) => `<span class="chip ${t === state.tag ? "on" : ""}" data-tag="${esc(t)}">${esc(t)}</span>`).join("")}</div>
+    <div class="count" id="count"></div><div id="list"></div>`;
+  $("#kind").value = state.kind;
+  const render = () => {
+    const words = state.q.toLowerCase().split(/\s+/).filter(Boolean);
+    const rows = state.attacks.filter((a) => (!state.tag || a.tags.includes(state.tag)) && (!state.kind || a.kind === state.kind)
+      && words.every((w) => a.name.toLowerCase().includes(w) || a.slug.includes(w)));
+    $("#count").textContent = `${rows.length} of ${state.attacks.length}`;
+    $("#list").innerHTML = rows.map((a) => `
+      <a class="row" href="#/a/${a.slug}">
+        <div class="name">${esc(a.name)}</div>
+        <div class="meta">${badges(a)}<span>${Object.values(a.sources).reduce((x, y) => x + y, 0)} sections</span>
+          <span>${a.words.toLocaleString()} words</span><span>${esc(a.tags.join(" · "))}</span></div>
+      </a>`).join("");
+  };
+  $("#q").oninput = (e) => { state.q = e.target.value; render(); };
+  $("#kind").onchange = (e) => { state.kind = e.target.value; render(); };
+  document.querySelectorAll(".chip").forEach((c) => c.onclick = () => {
+    state.tag = state.tag === c.dataset.tag ? "" : c.dataset.tag;
+    document.querySelectorAll(".chip").forEach((x) => x.classList.toggle("on", x.dataset.tag === state.tag));
+    render();
+  });
+  render();
+  $("#q").focus();
+}
+
+async function viewAttack(slug) {
+  nav("i");
+  const p = await api(`/api/attacks/${encodeURIComponent(slug)}`);
+  if (p.error) return ($("#app").textContent = p.error);
+  $("#app").innerHTML = `
+    <a href="#/" class="muted">← all attacks</a>
+    <h1>${esc(p.name)}</h1>
+    <div class="meta">${badges(p)}<span>${esc(p.tags.join(" · "))}</span>
+      <a href="/api/attacks/${p.slug}.md">markdown</a><a href="/api/attacks/${p.slug}">json</a></div>
+    <div class="meta" style="margin:6px 0 4px">${Object.entries(p.sources).map(([s, n]) => `<span>${esc(s)}: ${n}</span>`).join("")}
+      <a href="#" id="toggle">expand all</a></div>
+    ${p.sections.map((s, i) => `
+      <details class="sec" ${i === 0 ? "open" : ""}>
+        <summary><b>${esc(s.title)}</b><span class="src">${esc(s.source)} · ${esc(s.sid)}</span>
+          <a href="${esc(s.url)}" target="_blank" rel="noopener" class="src">source ↗</a></summary>
+        <div class="sec-body" data-i="${i}"></div>
+      </details>`).join("")}
+    <div class="archive-box">
+      <h2>Archive · pull on demand (${p.archive_count} items)</h2>
+      <div class="muted" style="font-size:13px">Not part of this page. Incidents, labs and ATT&amp;CK techniques linked to this attack.
+        Agents: <code>GET /api/archive?attack=${p.slug}</code></div>
+      ${p.archive_preview.map((a) => `<div class="meta"><a href="#/archive/item/${encodeURIComponent(a.sid)}">${esc(a.title)}</a><span>${esc(a.source)}</span></div>`).join("")}
+      ${p.archive_count ? `<p><a href="#/archive?attack=${p.slug}">Browse all ${p.archive_count} in the archive →</a></p>` : ""}
+    </div>`;
+  // render section bodies lazily on first open: pages can run to tens of thousands of words
+  document.querySelectorAll("details.sec").forEach((d) => {
+    const fill = () => { const b = d.querySelector(".sec-body"); if (!b.dataset.done) { b.innerHTML = md(p.sections[b.dataset.i].text); b.dataset.done = 1; } };
+    if (d.open) fill();
+    d.addEventListener("toggle", () => d.open && fill());
+  });
+  $("#toggle").onclick = (e) => {
+    e.preventDefault();
+    const all = [...document.querySelectorAll("details.sec")], open = !all.every((d) => d.open);
+    all.forEach((d) => (d.open = open));
+    e.target.textContent = open ? "collapse all" : "expand all";
+  };
+  window.scrollTo(0, 0);
+}
+
+async function viewArchive(params) {
+  nav("a");
+  const q = params.get("q") || "", attack = params.get("attack") || "", source = params.get("source") || "";
+  const offset = +params.get("offset") || 0;
+  const r = await api(`/api/archive?${new URLSearchParams({ q, attack, source, offset, limit: 50 })}`);
+  $("#app").innerHTML = `
+    <div class="arch-banner"><b>Archive: pulled on demand.</b> HackerOne incidents, PortSwigger labs and MITRE ATT&amp;CK techniques.
+      Kept outside the attack index so agents only fetch what they need.</div>
+    <form class="controls" id="f">
+      <input type="search" name="q" placeholder="Search archive…" value="${esc(q)}">
+      <select name="source"><option value="">all sources</option><option value="hackerone">HackerOne reports</option>
+        <option value="portswigger">PortSwigger labs</option><option value="mitre att&ck">MITRE ATT&amp;CK</option></select>
+      <input type="hidden" name="attack" value="${esc(attack)}"><button>Search</button>
+    </form>
+    ${attack ? `<div class="count">Linked to <a href="#/a/${esc(attack)}">${esc(attack)}</a> · <a href="#/archive?${new URLSearchParams({ q, source })}">clear</a></div>` : ""}
+    <div class="count">${r.total.toLocaleString()} results</div>
+    ${r.items.map((a) => `
+      <a class="row" href="#/archive/item/${encodeURIComponent(a.sid)}">
+        <div class="name">${esc(a.title)}</div>
+        <div class="meta"><span>${esc(a.source)}</span>
+          ${a.meta.upvotes ? `<span>▲ ${a.meta.upvotes}</span>` : ""}${a.meta.program ? `<span>${esc(a.meta.program)}</span>` : ""}
+          ${a.meta.vuln_type ? `<span>${esc(a.meta.vuln_type)}</span>` : ""}${a.attacks.map((s) => `<span class="badge">${esc(s)}</span>`).join("")}</div>
+      </a>`).join("")}
+    <div class="pager">
+      ${offset > 0 ? `<button data-o="${Math.max(0, offset - 50)}">← prev</button>` : ""}
+      ${offset + 50 < r.total ? `<button data-o="${offset + 50}">next →</button>` : ""}
+    </div>`;
+  $("#f [name=source]").value = source;
+  $("#f").onsubmit = (e) => { e.preventDefault(); location.hash = "#/archive?" + new URLSearchParams(new FormData(e.target)); };
+  document.querySelectorAll(".pager button").forEach((b) => b.onclick = () => {
+    location.hash = "#/archive?" + new URLSearchParams({ q, attack, source, offset: b.dataset.o });
+  });
+}
+
+async function viewArchiveItem(sid) {
+  nav("a");
+  const a = await api(`/api/archive/${encodeURIComponent(sid)}`);
+  if (a.error) return ($("#app").textContent = a.error);
+  $("#app").innerHTML = `
+    <div class="arch-banner"><b>Archive item</b> · pulled on demand</div>
+    <a href="javascript:history.back()" class="muted">← back</a>
+    <h1>${esc(a.title)}</h1>
+    <div class="meta"><span>${esc(a.source)}</span><span>${esc(a.sid)}</span><a href="${esc(a.url)}" target="_blank" rel="noopener">source ↗</a>
+      ${a.attacks.map((s) => `<a class="badge" href="#/a/${esc(s)}">${esc(s)}</a>`).join("")}</div>
+    <div class="sec-body" style="padding:12px 0">${a.text ? md(a.text) : `<p class="muted">No text in the dataset: open the source link. ${esc(JSON.stringify(a.meta))}</p>`}</div>`;
+  window.scrollTo(0, 0);
+}
+
+function route() {
+  const h = location.hash.slice(1) || "/";
+  const [path, query] = h.split("?");
+  if (path.startsWith("/a/")) return viewAttack(decodeURIComponent(path.slice(3)));
+  if (path.startsWith("/archive/item/")) return viewArchiveItem(decodeURIComponent(path.slice(14)));
+  if (path.startsWith("/archive")) return viewArchive(new URLSearchParams(query || ""));
+  return viewIndex();
+}
+window.addEventListener("hashchange", route);
+route();
+</script>
+</body>
+</html>

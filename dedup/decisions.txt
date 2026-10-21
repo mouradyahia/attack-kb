@@ -1,0 +1,273 @@
+# Semantic dedup log, append-only, processed top to bottom (titles only).
+#   +slug | Attack name | kind(attack|guide) | tags :: ids   -> new entry in the set (ids optional)
+#   slug :: ids                                             -> ids judged same as existing entry
+# Tags: web api auth mobile client server infra cloud supply-chain llm crypto privacy fraud dos
+#       lowlevel hardware ics social post-exploit process
+# ---- batch 1: PortSwigger articles + OWASP cheat sheets ----
++idor | Insecure direct object reference (IDOR / BOLA) | attack | web,api,auth :: PS:access-control/idor OWASP:Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet
++broken-access-control | Broken access control & privilege escalation | attack | web,api,auth :: PS:access-control PS:access-control/security-models OWASP:Access_Control_Cheat_Sheet OWASP:Authorization_Cheat_Sheet OWASP:Authorization_Regression_Testing_Cheat_Sheet OWASP:Authorization_Testing_Automation_Cheat_Sheet
++parameter-pollution | HTTP parameter pollution (server-side) | attack | web,api :: PS:api-testing/server-side-parameter-pollution
++api-security | API security testing (OWASP API Top 10 overview) | guide | api :: PS:api-testing PS:api-testing/top-10-api-vulnerabilities OWASP:REST_Assessment_Cheat_Sheet OWASP:REST_Security_Cheat_Sheet OWASP:Web_Service_Security_Cheat_Sheet OWASP:gRPC_Security_Cheat_Sheet
++password-attacks | Password guessing, brute force & username enumeration | attack | web,api,auth :: PS:authentication/password-based PS:authentication/auth-lab-passwords PS:authentication/auth-lab-usernames
++mfa-bypass | Multi-factor authentication bypass | attack | auth :: PS:authentication/multi-factor OWASP:Multifactor_Authentication_Cheat_Sheet
++auth-flaws | Broken authentication (generic) | attack | web,api,auth :: PS:authentication PS:authentication/securing PS:authentication/other-mechanisms OWASP:Authentication_Cheat_Sheet OWASP:JAAS_Cheat_Sheet
++clickjacking | Clickjacking (UI redressing) | attack | web,client :: PS:clickjacking OWASP:Clickjacking_Defense_Cheat_Sheet
++cors-misconfig | CORS misconfiguration & same-origin policy bypass | attack | web,api,client :: PS:cors PS:cors/access-control-allow-origin PS:cors/same-origin-policy
++xss | Cross-site scripting (XSS) | attack | web,client :: PS:cross-site-scripting PS:cross-site-scripting/cheat-sheet PS:cross-site-scripting/contexts PS:cross-site-scripting/dom-based PS:cross-site-scripting/exploiting PS:cross-site-scripting/preventing PS:cross-site-scripting/reflected PS:cross-site-scripting/stored OWASP:Cross_Site_Scripting_Prevention_Cheat_Sheet OWASP:DOM_based_XSS_Prevention_Cheat_Sheet OWASP:XSS_Filter_Evasion_Cheat_Sheet
++csp | Content Security Policy weaknesses & bypass | guide | web,client :: PS:cross-site-scripting/content-security-policy OWASP:Content_Security_Policy_Cheat_Sheet
++csti | Client-side template injection | attack | web,client :: PS:cross-site-scripting/contexts/client-side-template-injection
++dangling-markup | Dangling markup injection (scriptless HTML injection) | attack | web,client :: PS:cross-site-scripting/dangling-markup
++csrf | Cross-site request forgery (CSRF) | attack | web,auth :: PS:csrf PS:csrf/bypassing-referer-based-defenses PS:csrf/bypassing-samesite-restrictions PS:csrf/bypassing-token-validation PS:csrf/preventing PS:csrf/xss-vs-csrf OWASP:Cross-Site_Request_Forgery_Prevention_Cheat_Sheet
++insecure-deserialization | Insecure deserialization | attack | web,api,server :: PS:deserialization PS:deserialization/exploiting OWASP:Deserialization_Cheat_Sheet
++dom-sink-manipulation | DOM-based sink manipulation (client-side taint flows) | attack | web,client :: PS:dom-based PS:dom-based/ajax-request-header-manipulation PS:dom-based/client-side-json-injection PS:dom-based/client-side-sql-injection PS:dom-based/client-side-xpath-injection PS:dom-based/cookie-manipulation PS:dom-based/denial-of-service PS:dom-based/document-domain-manipulation PS:dom-based/dom-data-manipulation PS:dom-based/html5-storage-manipulation PS:dom-based/javascript-injection PS:dom-based/link-manipulation PS:dom-based/local-file-path-manipulation PS:dom-based/websocket-url-poisoning
++postmessage-abuse | Web message (postMessage) manipulation | attack | web,client :: PS:dom-based/controlling-the-web-message-source PS:dom-based/web-message-manipulation
++dom-clobbering | DOM clobbering | attack | web,client :: PS:dom-based/dom-clobbering OWASP:DOM_Clobbering_Prevention_Cheat_Sheet
++open-redirect | Open redirect & reverse tabnabbing | attack | web,auth :: PS:dom-based/open-redirection OWASP:Unvalidated_Redirects_and_Forwards_Cheat_Sheet
++path-traversal | Path traversal | attack | web,api,server :: PS:file-path-traversal
++file-upload | Unrestricted / malicious file upload | attack | web,api,server :: PS:file-upload OWASP:File_Upload_Cheat_Sheet
++graphql-abuse | GraphQL API attacks (introspection, batching, depth) | attack | api :: PS:graphql PS:graphql/what-is-graphql OWASP:GraphQL_Cheat_Sheet
++host-header | HTTP Host header attacks | attack | web,server :: PS:host-header PS:host-header/exploiting
++password-reset-poisoning | Password reset flaws & reset poisoning | attack | web,auth :: PS:host-header/exploiting/password-reset-poisoning OWASP:Forgot_Password_Cheat_Sheet
++info-disclosure | Sensitive information disclosure | attack | web,api,server,privacy :: PS:information-disclosure PS:information-disclosure/exploiting
++jwt-attacks | JWT attacks (alg confusion, none, weak key, kid/jku) | attack | api,auth,crypto :: PS:jwt PS:jwt/algorithm-confusion OWASP:JSON_Web_Token_Cheat_Sheet
++prompt-injection | LLM prompt injection & insecure LLM tool use | attack | llm :: PS:llm-attacks PS:llm-attacks/ai-powered-scanner-vulnerabilities OWASP:LLM_Prompt_Injection_Prevention_Cheat_Sheet
++logic-flaws | Business logic flaws | attack | web,api,fraud :: PS:logic-flaws PS:logic-flaws/examples OWASP:Business_Logic_Security_Cheat_Sheet OWASP:Abuse_Case_Cheat_Sheet
++nosql-injection | NoSQL injection | attack | web,api,server :: PS:nosql-injection PS:nosql-injection/nosql-databases OWASP:NoSQL_Security_Cheat_Sheet
++oauth-flaws | OAuth 2.0 / OpenID Connect flaws | attack | auth,api :: PS:oauth PS:oauth/grant-types PS:oauth/openid PS:oauth/preventing OWASP:OAuth2_Cheat_Sheet
++os-command-injection | OS command injection | attack | web,api,server :: PS:os-command-injection OWASP:OS_Command_Injection_Defense_Cheat_Sheet
++prototype-pollution | Prototype pollution (client & server) | attack | web,client,server :: PS:prototype-pollution PS:prototype-pollution/client-side PS:prototype-pollution/client-side/browser-apis PS:prototype-pollution/javascript-prototypes-and-inheritance PS:prototype-pollution/preventing PS:prototype-pollution/server-side OWASP:Prototype_Pollution_Prevention_Cheat_Sheet
++race-conditions | Race conditions (limit overrun, TOCTOU) | attack | web,api,server,fraud :: PS:race-conditions
++request-smuggling | HTTP request smuggling & desync | attack | web,infra :: PS:request-smuggling PS:request-smuggling/advanced PS:request-smuggling/advanced/http2-downgrading PS:request-smuggling/advanced/http2-exclusive-vectors PS:request-smuggling/advanced/request-tunnelling PS:request-smuggling/advanced/response-queue-poisoning PS:request-smuggling/browser PS:request-smuggling/browser/cl-0 PS:request-smuggling/browser/client-side-desync PS:request-smuggling/browser/pause-based-desync PS:request-smuggling/exploiting PS:request-smuggling/finding
++ssti | Server-side template & expression-language injection | attack | web,server :: PS:server-side-template-injection PS:server-side-template-injection/exploiting
++sqli | SQL injection | attack | web,api,server :: PS:sql-injection PS:sql-injection/blind PS:sql-injection/cheat-sheet PS:sql-injection/examining-the-database PS:sql-injection/union-attacks OWASP:SQL_Injection_Prevention_Cheat_Sheet OWASP:Query_Parameterization_Cheat_Sheet
++ssrf | Server-side request forgery (SSRF) | attack | web,api,server,cloud :: PS:ssrf PS:ssrf/blind PS:ssrf/url-validation-bypass-cheat-sheet OWASP:Server_Side_Request_Forgery_Prevention_Cheat_Sheet
++web-cache-deception | Web cache deception | attack | web,infra :: PS:web-cache-deception PS:web-cache-deception/wcd-lab-delimiter-list
++web-cache-poisoning | Web cache poisoning | attack | web,infra :: PS:web-cache-poisoning PS:web-cache-poisoning/exploiting-design-flaws PS:web-cache-poisoning/exploiting-implementation-flaws
++websocket-hijacking | WebSocket attacks & cross-site WebSocket hijacking | attack | web,api :: PS:websockets PS:websockets/cross-site-websocket-hijacking PS:websockets/cross-site-websocket-hijacking/lab PS:websockets/what-are-websockets OWASP:WebSocket_Security_Cheat_Sheet
++xxe | XML injection & external entities (XXE) | attack | web,api,server :: PS:xxe PS:xxe/blind PS:xxe/xml-entities OWASP:XML_External_Entity_Prevention_Cheat_Sheet OWASP:XML_Security_Cheat_Sheet
++ai-agent-security | AI agent, MCP, RAG & AI coding-tool security | attack | llm :: OWASP:AI_Agent_Security_Cheat_Sheet OWASP:MCP_Security_Cheat_Sheet OWASP:RAG_Security_Cheat_Sheet OWASP:Secure_AI_Model_Ops_Cheat_Sheet OWASP:Secure_Coding_with_AI_Cheat_Sheet OWASP:AI-Powered_Advertising_Systems_Security_Cheat_Sheet OWASP:AML_Sanctions_AI_Agent_Payments_Cheat_Sheet
++ajax-html5-client | HTML5 / AJAX client-side security | guide | web,client :: OWASP:AJAX_Security_Cheat_Sheet OWASP:HTML5_Security_Cheat_Sheet
++threat-modeling | Threat modeling & attack surface analysis | guide | process :: OWASP:Attack_Surface_Analysis_Cheat_Sheet OWASP:Threat_Modeling_Cheat_Sheet OWASP:Secure_Product_Design_Cheat_Sheet OWASP:Microservices_based_Security_Arch_Doc_Cheat_Sheet OWASP:Secure_Code_Review_Cheat_Sheet OWASP:Security_Terminology_Cheat_Sheet
++automotive-drone | Automotive & drone systems security | guide | hardware,ics :: OWASP:Automotive_Security_Cheat_Sheet OWASP:Drone_Security_Cheat_Sheet
++input-validation | Missing / improper input validation | attack | web,api,server :: OWASP:Input_Validation_Cheat_Sheet OWASP:Bean_Validation_Cheat_Sheet
++bot-automation | Automated abuse: bots, scraping & anti-automation | attack | web,api,fraud,dos :: OWASP:Bot_Management_and_Anti-Automation_Cheat_Sheet
++browser-extension | Malicious or vulnerable browser & IDE extensions | attack | client,supply-chain :: OWASP:Browser_Extension_Vulnerabilities_Cheat_Sheet
++toolchain-hardening | Native toolchain hardening (C/C++) | guide | lowlevel :: OWASP:C-Based_Toolchain_Hardening_Cheat_Sheet
++cicd-compromise | CI/CD pipeline compromise | attack | supply-chain,infra :: OWASP:CI_CD_Security_Cheat_Sheet OWASP:GitHub_Actions_Security_Cheat_Sheet
++security-questions | Weak knowledge-based authentication (security questions) | attack | auth :: OWASP:Choosing_and_Using_Security_Questions_Cheat_Sheet
++session-hijacking | Session hijacking, fixation & token forgery | attack | web,auth :: OWASP:Cookie_Theft_Mitigation_Cheat_Sheet OWASP:Session_Management_Cheat_Sheet
++credential-stuffing | Credential stuffing & password spraying | attack | auth,fraud :: OWASP:Credential_Stuffing_Prevention_Cheat_Sheet
++weak-crypto-storage | Cleartext or weakly encrypted storage & key management | attack | crypto,server :: OWASP:Cryptographic_Storage_Cheat_Sheet OWASP:Key_Management_Cheat_Sheet
++database-hardening | Database exposure & hardening | guide | server,infra :: OWASP:Database_Security_Cheat_Sheet
++dos | Denial of service (application & resource exhaustion) | attack | dos,web,api,infra :: OWASP:Denial_of_Service_Cheat_Sheet
++vulnerable-dependencies | Vulnerable & outdated dependencies | attack | supply-chain :: OWASP:Dependency_Graph_SBOM_Cheat_Sheet OWASP:Vulnerable_Dependency_Management_Cheat_Sheet OWASP:Legacy_Application_Management_Cheat_Sheet OWASP:Virtual_Patching_Cheat_Sheet
++framework-hardening | Web framework security hardening (Django, Rails, Laravel, …) | guide | web,server :: OWASP:Django_REST_Framework_Cheat_Sheet OWASP:Django_Security_Cheat_Sheet OWASP:DotNet_Security_Cheat_Sheet OWASP:Java_Security_Cheat_Sheet OWASP:Injection_Prevention_in_Java_Cheat_Sheet OWASP:Laravel_Cheat_Sheet OWASP:Nextjs_Security_Cheat_Sheet OWASP:Nodejs_Security_Cheat_Sheet OWASP:PHP_Configuration_Cheat_Sheet OWASP:Ruby_on_Rails_Cheat_Sheet OWASP:Symfony_Cheat_Sheet
++container-escape | Container, VM & sandbox escape (Docker, Kubernetes) | attack | infra,cloud :: OWASP:Docker_Security_Cheat_Sheet OWASP:Kubernetes_Security_Cheat_Sheet OWASP:NodeJS_Docker_Cheat_Sheet
++email-abuse | Email validation abuse & address spoofing | attack | auth,social :: OWASP:Email_Validation_and_Verification_Cheat_Sheet
++verbose-errors | Verbose errors & stack trace leakage | attack | web,api,server :: OWASP:Error_Handling_Cheat_Sheet
++security-headers | Missing HTTP security headers | attack | web,client :: OWASP:HTTP_Headers_Cheat_Sheet OWASP:HTTP_Strict_Transport_Security_Cheat_Sheet
++iac-misconfig | Infrastructure-as-code & cloud misconfiguration | attack | cloud,infra :: OWASP:Infrastructure_as_Code_Security_Cheat_Sheet OWASP:Secure_Cloud_Architecture_Cheat_Sheet OWASP:Serverless_FaaS_Security_Cheat_Sheet
++injection-generic | Injection (generic / other interpreters) | attack | web,api,server :: OWASP:Injection_Prevention_Cheat_Sheet
++ldap-injection | LDAP injection | attack | server,auth :: OWASP:LDAP_Injection_Prevention_Cheat_Sheet
++insufficient-logging | Insufficient logging & monitoring | attack | process,server :: OWASP:Logging_Cheat_Sheet OWASP:Logging_Vocabulary_Cheat_Sheet
++mass-assignment | Mass assignment | attack | api,web :: OWASP:Mass_Assignment_Cheat_Sheet
++microservice-trust | Microservice & multi-tenant trust boundary flaws | attack | api,infra,cloud :: OWASP:Microservices_Security_Cheat_Sheet OWASP:Multi_Tenant_Security_Cheat_Sheet OWASP:Zero_Trust_Architecture_Cheat_Sheet OWASP:Network_Segmentation_Cheat_Sheet
++mobile-app-security | Mobile app security weaknesses (storage, IPC, reversing) | attack | mobile :: OWASP:Mobile_Application_Security_Cheat_Sheet
++malicious-package | Malicious / typosquatted packages & dependency confusion | attack | supply-chain :: OWASP:NPM_Security_Cheat_Sheet OWASP:Software_Supply_Chain_Security_Cheat_Sheet
++weak-password-storage | Weak password hashing / storage | attack | auth,crypto :: OWASP:Password_Storage_Cheat_Sheet
++tls-mitm | Traffic interception & MITM (TLS, pinning, sniffing) | attack | crypto,mobile,infra :: OWASP:Pinning_Cheat_Sheet OWASP:TLS_Cipher_String_Cheat_Sheet OWASP:Transport_Layer_Protection_Cheat_Sheet OWASP:Transport_Layer_Security_Cheat_Sheet
++saml-flaws | SAML / SSO assertion attacks | attack | auth :: OWASP:SAML_Security_Cheat_Sheet
++secrets-exposure | Hardcoded / leaked secrets | attack | supply-chain,server,mobile :: OWASP:Secrets_Management_Cheat_Sheet
++subdomain-takeover | Subdomain takeover | attack | infra,web :: OWASP:Subdomain_Takeover_Prevention_Cheat_Sheet
++third-party-js | Third-party JavaScript compromise (Magecart) | attack | web,client,supply-chain :: OWASP:Third_Party_Javascript_Management_Cheat_Sheet
++payment-flaws | Payment & transaction authorization flaws | attack | fraud,api :: OWASP:Third_Party_Payment_Gateway_Integration_Cheat_Sheet OWASP:Transaction_Authorization_Cheat_Sheet
++privacy-leak | User privacy & tracking leaks | attack | privacy :: OWASP:User_Privacy_Protection_Cheat_Sheet
++vuln-disclosure | Vulnerability disclosure process | guide | process :: OWASP:Vulnerability_Disclosure_Cheat_Sheet
++xs-leaks | Cross-site leaks & cross-origin data theft | attack | web,client,privacy :: OWASP:XS_Leaks_Cheat_Sheet
+# ---- batch 2: CAPEC (new entries first, then assignments to earlier ones) ----
++memory-corruption | Memory corruption (buffer overflow, format string, pointer bugs) | attack | lowlevel :: CAPEC-10 CAPEC-100 CAPEC-123 CAPEC-129 CAPEC-135 CAPEC-14 CAPEC-24 CAPEC-256 CAPEC-42 CAPEC-44 CAPEC-45 CAPEC-46 CAPEC-47 CAPEC-540 CAPEC-67 CAPEC-8 CAPEC-9
++integer-overflow | Integer overflow, numeric & type-conversion errors | attack | lowlevel,server :: CAPEC-128 CAPEC-92
++exposed-hidden-interfaces | Exposed hidden, debug & non-production interfaces | attack | web,api,infra :: CAPEC-113 CAPEC-121 CAPEC-133 CAPEC-143 CAPEC-144 CAPEC-179 CAPEC-36
++protocol-manipulation | Protocol & message tampering between components | attack | api,infra :: CAPEC-12 CAPEC-216 CAPEC-218 CAPEC-220 CAPEC-272 CAPEC-276 CAPEC-277 CAPEC-278 CAPEC-279 CAPEC-5 CAPEC-51
++encoding-filter-bypass | Encoding & canonicalization tricks to bypass input filters | attack | web,api :: CAPEC-120 CAPEC-200 CAPEC-267 CAPEC-3 CAPEC-4 CAPEC-43 CAPEC-52 CAPEC-53 CAPEC-64 CAPEC-71 CAPEC-72 CAPEC-78 CAPEC-79 CAPEC-80
++local-file-tampering | Local file, symlink & temp-file attacks | attack | server,lowlevel :: CAPEC-132 CAPEC-149 CAPEC-155 CAPEC-165 CAPEC-177 CAPEC-263 CAPEC-40 CAPEC-562
++env-config-manipulation | Environment & configuration manipulation | attack | server,infra :: CAPEC-13 CAPEC-176 CAPEC-203 CAPEC-75
++dll-hijacking | Library / search-order hijacking (DLL side-loading) | attack | post-exploit :: CAPEC-159 CAPEC-38 CAPEC-471 CAPEC-641
++code-injection | Code injection & file inclusion (eval, LFI/RFI) | attack | web,server :: CAPEC-138 CAPEC-175 CAPEC-193 CAPEC-242 CAPEC-251 CAPEC-252 CAPEC-253
++mail-injection | Email header / IMAP / SMTP injection | attack | server :: CAPEC-134 CAPEC-183 CAPEC-41
++xpath-injection | XPath / XQuery injection | attack | server :: CAPEC-83 CAPEC-84
++dns-attacks | DNS spoofing, cache poisoning & domain hijack | attack | infra :: CAPEC-142 CAPEC-585 CAPEC-598 CAPEC-89
++dns-rebinding | DNS rebinding | attack | web,infra :: CAPEC-275
++signature-spoofing | Signature & integrity-check spoofing | attack | crypto :: CAPEC-145 CAPEC-461 CAPEC-473 CAPEC-474 CAPEC-475 CAPEC-476 CAPEC-477 CAPEC-485
++parser-bomb-dos | Algorithmic-complexity & parser-bomb DoS (ReDoS, billion laughs, zip bombs) | attack | dos,server :: CAPEC-147 CAPEC-197 CAPEC-229 CAPEC-230 CAPEC-231 CAPEC-491 CAPEC-492 CAPEC-493
++content-spoofing | Content & UI spoofing | attack | web,client,social :: CAPEC-148 CAPEC-386 CAPEC-387 CAPEC-388 CAPEC-389
++identity-spoofing | Identity & data-source spoofing | attack | auth,api :: CAPEC-151 CAPEC-194 CAPEC-195 CAPEC-21 CAPEC-633 CAPEC-690
++client-trust | Trusting client-side data & controls (hidden fields, client validation, tampered clients) | attack | web,api,mobile,fraud :: CAPEC-162 CAPEC-202 CAPEC-207 CAPEC-208 CAPEC-22 CAPEC-385 CAPEC-39 CAPEC-74 CAPEC-77
++phishing | Phishing, typosquatting & counterfeit sites | attack | social :: CAPEC-163 CAPEC-164 CAPEC-543 CAPEC-544 CAPEC-611 CAPEC-630 CAPEC-631 CAPEC-632 CAPEC-654 CAPEC-656 CAPEC-701 CAPEC-98
++reverse-engineering | Reverse engineering of apps & protocols | attack | mobile,client :: CAPEC-167 CAPEC-188 CAPEC-189 CAPEC-190 CAPEC-192 CAPEC-65
++malware-delivery | Malware delivery & malicious files | attack | social,post-exploit :: CAPEC-17 CAPEC-185 CAPEC-448 CAPEC-542 CAPEC-549 CAPEC-635 CAPEC-636
++recon | Reconnaissance, scanning & fingerprinting | attack | infra,web :: CAPEC-169 CAPEC-170 CAPEC-215 CAPEC-224 CAPEC-28 CAPEC-285 CAPEC-287 CAPEC-290 CAPEC-291 CAPEC-292 CAPEC-293 CAPEC-294 CAPEC-295 CAPEC-296 CAPEC-297 CAPEC-298 CAPEC-299 CAPEC-300 CAPEC-301 CAPEC-302 CAPEC-303 CAPEC-304 CAPEC-305 CAPEC-306 CAPEC-307 CAPEC-308 CAPEC-309 CAPEC-310 CAPEC-312 CAPEC-313 CAPEC-317 CAPEC-318 CAPEC-319 CAPEC-320 CAPEC-321 CAPEC-322 CAPEC-323 CAPEC-324 CAPEC-325 CAPEC-326 CAPEC-327 CAPEC-328 CAPEC-329 CAPEC-330 CAPEC-331 CAPEC-332 CAPEC-54 CAPEC-541 CAPEC-85 CAPEC-95
++host-discovery | Post-compromise host & network discovery | attack | post-exploit :: CAPEC-497 CAPEC-529 CAPEC-573 CAPEC-574 CAPEC-575 CAPEC-576 CAPEC-577 CAPEC-580 CAPEC-581 CAPEC-639 CAPEC-643 CAPEC-646 CAPEC-694
++update-hijack | Malicious or hijacked software updates | attack | supply-chain :: CAPEC-184 CAPEC-186 CAPEC-187 CAPEC-533 CAPEC-657 CAPEC-669
++code-signing-abuse | Code-signing abuse | attack | supply-chain,crypto :: CAPEC-206 CAPEC-68 CAPEC-673
++account-lockout | Account lockout / authentication denial of service | attack | auth,dos :: CAPEC-2
++cryptanalysis | Weak or broken cryptography (algorithms, IVs, key size, padding oracle) | attack | crypto :: CAPEC-20 CAPEC-463 CAPEC-97
++local-privilege-escalation | Local privilege escalation (OS level) | attack | post-exploit,server :: CAPEC-233 CAPEC-234 CAPEC-30 CAPEC-69
++crlf-injection | CRLF injection & HTTP response splitting | attack | web,server :: CAPEC-105 CAPEC-34
++log-tampering | Log injection & tampering | attack | server,post-exploit :: CAPEC-268 CAPEC-571 CAPEC-81 CAPEC-93
++defense-evasion | Defense evasion (disabling security tools, hiding activity) | attack | post-exploit :: CAPEC-578 CAPEC-655
++persistence | Persistence on compromised hosts (services, run keys, rootkits) | attack | post-exploit :: CAPEC-270 CAPEC-478 CAPEC-550 CAPEC-551 CAPEC-552 CAPEC-556 CAPEC-558 CAPEC-564 CAPEC-579 CAPEC-642
++physical-access | Physical access, device theft & physical observation | attack | hardware,social :: CAPEC-390 CAPEC-391 CAPEC-392 CAPEC-393 CAPEC-394 CAPEC-395 CAPEC-397 CAPEC-398 CAPEC-399 CAPEC-400 CAPEC-402 CAPEC-406 CAPEC-457 CAPEC-458 CAPEC-507 CAPEC-508 CAPEC-547 CAPEC-626 CAPEC-675
++social-engineering | Social engineering & pretexting | attack | social :: CAPEC-407 CAPEC-410 CAPEC-412 CAPEC-413 CAPEC-414 CAPEC-415 CAPEC-416 CAPEC-417 CAPEC-418 CAPEC-420 CAPEC-421 CAPEC-422 CAPEC-423 CAPEC-424 CAPEC-425 CAPEC-426 CAPEC-427 CAPEC-428 CAPEC-429 CAPEC-433 CAPEC-434 CAPEC-435
++hardware-supply-chain | Hardware & firmware supply-chain tampering | attack | hardware,supply-chain :: CAPEC-438 CAPEC-439 CAPEC-440 CAPEC-447 CAPEC-452 CAPEC-456 CAPEC-516 CAPEC-517 CAPEC-518 CAPEC-519 CAPEC-520 CAPEC-521 CAPEC-522 CAPEC-530 CAPEC-531 CAPEC-532 CAPEC-534 CAPEC-535 CAPEC-537 CAPEC-539 CAPEC-638 CAPEC-671 CAPEC-672 CAPEC-674 CAPEC-677
++network-routing-attacks | Network routing, injection & blocking (BGP, TCP RST, DHCP) | attack | infra :: CAPEC-161 CAPEC-481 CAPEC-582 CAPEC-583 CAPEC-584 CAPEC-589 CAPEC-590 CAPEC-594 CAPEC-595 CAPEC-596 CAPEC-697
++network-flood-ddos | Volumetric / network-layer DDoS | attack | dos,infra :: CAPEC-482 CAPEC-486 CAPEC-487 CAPEC-488 CAPEC-489 CAPEC-490 CAPEC-494 CAPEC-495 CAPEC-496 CAPEC-528
++mobile-ipc-abuse | Mobile IPC & WebView attacks (intents, deep links, task hijack) | attack | mobile :: CAPEC-499 CAPEC-500 CAPEC-501 CAPEC-502 CAPEC-503 CAPEC-504 CAPEC-505
++ad-credential-attacks | Credential reuse & lateral movement (pass-the-hash, Kerberos) | attack | post-exploit,auth :: CAPEC-509 CAPEC-555 CAPEC-560 CAPEC-561 CAPEC-644 CAPEC-645 CAPEC-652 CAPEC-653
++jamming | RF jamming | attack | hardware :: CAPEC-559 CAPEC-599 CAPEC-601 CAPEC-603 CAPEC-604 CAPEC-605 CAPEC-607
++wireless-attacks | Wireless & cellular attacks (evil twin, rogue base station, Bluetooth) | attack | hardware,infra,mobile :: CAPEC-606 CAPEC-608 CAPEC-609 CAPEC-610 CAPEC-612 CAPEC-613 CAPEC-614 CAPEC-615 CAPEC-616 CAPEC-617 CAPEC-618 CAPEC-619 CAPEC-666 CAPEC-667 CAPEC-668
++side-channel | Side-channel & emanation attacks | attack | hardware,crypto,lowlevel :: CAPEC-621 CAPEC-622 CAPEC-623 CAPEC-663 CAPEC-696 CAPEC-699
++hardware-attacks | Hardware exploitation (fault injection, debug ports, firmware) | attack | hardware :: CAPEC-401 CAPEC-624 CAPEC-625 CAPEC-665 CAPEC-679 CAPEC-680 CAPEC-681 CAPEC-682 CAPEC-702
++gps-spoofing | GPS / location spoofing | attack | mobile,fraud :: CAPEC-627 CAPEC-628
++process-injection | Process injection | attack | post-exploit :: CAPEC-640
++host-data-collection | Data collection on compromised hosts (clipboard, screen, input) | attack | post-exploit,privacy :: CAPEC-569 CAPEC-634 CAPEC-637 CAPEC-647 CAPEC-648
++credential-dumping | Credential theft on hosts (keylogging, dumping) | attack | post-exploit,auth :: CAPEC-568
++mobile-tamper-evasion | Root/jailbreak detection & anti-tamper bypass | attack | mobile :: CAPEC-660 CAPEC-661
++default-credentials | Default or common credentials | attack | auth,infra :: CAPEC-70
+broken-access-control :: CAPEC-1 CAPEC-122 CAPEC-180 CAPEC-274 CAPEC-58 CAPEC-87
+session-hijacking :: CAPEC-102 CAPEC-196 CAPEC-226 CAPEC-31 CAPEC-59 CAPEC-60 CAPEC-61 CAPEC-593 CAPEC-662
+clickjacking :: CAPEC-103 CAPEC-173 CAPEC-181 CAPEC-222 CAPEC-506 CAPEC-587
+xss :: CAPEC-104 CAPEC-107 CAPEC-174 CAPEC-178 CAPEC-18 CAPEC-182 CAPEC-19 CAPEC-198 CAPEC-199 CAPEC-209 CAPEC-243 CAPEC-244 CAPEC-245 CAPEC-247 CAPEC-32 CAPEC-588 CAPEC-591 CAPEC-592 CAPEC-63 CAPEC-86
+request-smuggling :: CAPEC-273 CAPEC-33
+sqli :: CAPEC-108 CAPEC-109 CAPEC-110 CAPEC-470 CAPEC-66 CAPEC-7
+info-disclosure :: CAPEC-11 CAPEC-116 CAPEC-127 CAPEC-150 CAPEC-204 CAPEC-383 CAPEC-545 CAPEC-548
+xs-leaks :: CAPEC-111 CAPEC-462 CAPEC-467 CAPEC-468
+password-attacks :: CAPEC-112 CAPEC-16 CAPEC-49
+auth-flaws :: CAPEC-114 CAPEC-115 CAPEC-90
+tls-mitm :: CAPEC-117 CAPEC-157 CAPEC-158 CAPEC-217 CAPEC-384 CAPEC-459 CAPEC-479 CAPEC-620 CAPEC-651 CAPEC-94
+race-conditions :: CAPEC-124 CAPEC-26 CAPEC-27 CAPEC-29
+dos :: CAPEC-125 CAPEC-130 CAPEC-131 CAPEC-227 CAPEC-25 CAPEC-469 CAPEC-572 CAPEC-96
+path-traversal :: CAPEC-126 CAPEC-139 CAPEC-597 CAPEC-76
+ldap-injection :: CAPEC-136
+injection-generic :: CAPEC-101 CAPEC-137 CAPEC-160 CAPEC-240
+logic-flaws :: CAPEC-140 CAPEC-166 CAPEC-212 CAPEC-554
+web-cache-poisoning :: CAPEC-141
+xxe :: CAPEC-146 CAPEC-201 CAPEC-219 CAPEC-221 CAPEC-228 CAPEC-250 CAPEC-271
+os-command-injection :: CAPEC-15 CAPEC-248 CAPEC-6 CAPEC-88
+input-validation :: CAPEC-153
+open-redirect :: CAPEC-154
+secrets-exposure :: CAPEC-191 CAPEC-37
+csrf :: CAPEC-510 CAPEC-62
+file-upload :: CAPEC-168 CAPEC-23 CAPEC-35 CAPEC-563 CAPEC-649 CAPEC-650 CAPEC-73
+container-escape :: CAPEC-237 CAPEC-480
+idor :: CAPEC-261
+cors-misconfig :: CAPEC-465 CAPEC-466
+parameter-pollution :: CAPEC-460
+privacy-leak :: CAPEC-464 CAPEC-472
+ssrf :: CAPEC-48 CAPEC-664
+password-reset-poisoning :: CAPEC-50
+weak-password-storage :: CAPEC-55
+credential-stuffing :: CAPEC-565 CAPEC-600
+microservice-trust :: CAPEC-546 CAPEC-57 CAPEC-700
+insecure-deserialization :: CAPEC-586
+nosql-injection :: CAPEC-676
+malicious-package :: CAPEC-441 CAPEC-442 CAPEC-446 CAPEC-523 CAPEC-538 CAPEC-691 CAPEC-692 CAPEC-693 CAPEC-695
+cicd-compromise :: CAPEC-443 CAPEC-444 CAPEC-445 CAPEC-511 CAPEC-524 CAPEC-536 CAPEC-670 CAPEC-678
+browser-extension :: CAPEC-698
+mobile-app-security :: CAPEC-498
+# ---- batch 3: CWE ----
++code-quality | Code quality & maintainability weaknesses (not directly exploitable) | guide | process
++error-handling | Improper error & exception handling (fail-open, unchecked returns) | attack | server
++insecure-randomness | Insecure randomness & predictable identifiers | attack | crypto,auth
++security-misconfiguration | Security misconfiguration & insecure defaults | attack | server,infra
++insecure-permissions | Incorrect permissions on files & resources | attack | server,infra
++csv-formula-injection | CSV / spreadsheet formula injection | attack | web,server
++insecure-design | Insecure design & violated security principles | attack | process
+path-traversal :: CWE-22 CWE-23 CWE-24 CWE-25 CWE-26 CWE-27 CWE-28 CWE-29 CWE-30 CWE-31 CWE-32 CWE-33 CWE-34 CWE-35 CWE-36 CWE-37 CWE-38 CWE-39 CWE-40 CWE-41 CWE-42 CWE-43 CWE-44 CWE-45 CWE-46 CWE-47 CWE-48 CWE-49 CWE-50 CWE-51 CWE-52 CWE-53 CWE-54 CWE-55 CWE-56 CWE-57 CWE-58 CWE-66 CWE-67 CWE-73
+local-file-tampering :: CWE-59 CWE-61 CWE-62 CWE-64 CWE-65 CWE-377 CWE-1386
+file-upload :: CWE-69 CWE-72 CWE-434 CWE-553 CWE-616 CWE-641 CWE-646
+injection-generic :: CWE-74 CWE-75 CWE-76 CWE-99 CWE-116 CWE-138 CWE-140 CWE-141 CWE-142 CWE-143 CWE-144 CWE-145 CWE-146 CWE-147 CWE-148 CWE-149 CWE-150 CWE-151 CWE-152 CWE-153 CWE-154 CWE-155 CWE-156 CWE-157 CWE-158 CWE-159 CWE-160 CWE-161 CWE-162 CWE-163 CWE-164 CWE-165 CWE-166 CWE-167 CWE-168 CWE-707 CWE-838 CWE-943
+os-command-injection :: CWE-77 CWE-78 CWE-88
+xss :: CWE-79 CWE-80 CWE-81 CWE-82 CWE-83 CWE-84 CWE-85 CWE-86 CWE-87 CWE-692
+sqli :: CWE-89 CWE-564 CWE-619
+ldap-injection :: CWE-90
+xpath-injection :: CWE-91 CWE-643 CWE-652
+crlf-injection :: CWE-93 CWE-113 CWE-644
+code-injection :: CWE-94 CWE-95 CWE-96 CWE-98 CWE-470 CWE-473 CWE-621 CWE-627 CWE-913 CWE-914
+input-validation :: CWE-20 CWE-102 CWE-103 CWE-104 CWE-105 CWE-106 CWE-107 CWE-108 CWE-109 CWE-110 CWE-112 CWE-115 CWE-179 CWE-183 CWE-184 CWE-185 CWE-186 CWE-187 CWE-228 CWE-229 CWE-230 CWE-231 CWE-232 CWE-233 CWE-234 CWE-235 CWE-236 CWE-237 CWE-238 CWE-239 CWE-240 CWE-241 CWE-349 CWE-351 CWE-554 CWE-624 CWE-625 CWE-777 CWE-1173 CWE-1174 CWE-1284 CWE-1285 CWE-1286 CWE-1287 CWE-1288 CWE-1289
+encoding-filter-bypass :: CWE-172 CWE-173 CWE-174 CWE-175 CWE-176 CWE-177 CWE-178 CWE-180 CWE-181 CWE-182 CWE-626 CWE-790 CWE-791 CWE-792 CWE-793 CWE-794 CWE-795 CWE-796 CWE-797
+log-tampering :: CWE-117
+memory-corruption :: CWE-111 CWE-118 CWE-119 CWE-120 CWE-121 CWE-122 CWE-123 CWE-124 CWE-125 CWE-126 CWE-127 CWE-129 CWE-130 CWE-131 CWE-134 CWE-135 CWE-170 CWE-188 CWE-193 CWE-242 CWE-415 CWE-416 CWE-456 CWE-457 CWE-466 CWE-467 CWE-468 CWE-469 CWE-476 CWE-562 CWE-587 CWE-588 CWE-590 CWE-676 CWE-680 CWE-690 CWE-695 CWE-761 CWE-762 CWE-763 CWE-785 CWE-786 CWE-787 CWE-788 CWE-805 CWE-806 CWE-822 CWE-823 CWE-824 CWE-825 CWE-843 CWE-908 CWE-909 CWE-1341 CWE-1419
+integer-overflow :: CWE-128 CWE-190 CWE-191 CWE-192 CWE-194 CWE-195 CWE-196 CWE-197 CWE-198 CWE-369 CWE-681 CWE-682 CWE-704 CWE-839 CWE-1077 CWE-1335 CWE-1339 CWE-1389
+info-disclosure :: CWE-200 CWE-201 CWE-202 CWE-203 CWE-204 CWE-205 CWE-206 CWE-207 CWE-212 CWE-213 CWE-214 CWE-219 CWE-220 CWE-226 CWE-244 CWE-316 CWE-402 CWE-403 CWE-433 CWE-459 CWE-488 CWE-497 CWE-524 CWE-525 CWE-527 CWE-528 CWE-529 CWE-530 CWE-532 CWE-538 CWE-539 CWE-548 CWE-552 CWE-591 CWE-598 CWE-612 CWE-668 CWE-669 CWE-1230 CWE-1323
+side-channel :: CWE-208 CWE-385 CWE-514 CWE-515 CWE-1255 CWE-1300 CWE-1303 CWE-1342 CWE-1420 CWE-1421 CWE-1422 CWE-1423
+verbose-errors :: CWE-7 CWE-12 CWE-209 CWE-210 CWE-211 CWE-535 CWE-536 CWE-537 CWE-550 CWE-756
+exposed-hidden-interfaces :: CWE-215 CWE-489 CWE-618 CWE-623 CWE-749 CWE-912
+privacy-leak :: CWE-359
+broken-access-control :: CWE-266 CWE-267 CWE-269 CWE-284 CWE-285 CWE-286 CWE-419 CWE-420 CWE-424 CWE-425 CWE-551 CWE-638 CWE-647 CWE-650 CWE-698 CWE-842 CWE-862 CWE-863 CWE-1220 CWE-1280
+local-privilege-escalation :: CWE-250 CWE-268 CWE-270 CWE-271 CWE-272 CWE-273 CWE-274 CWE-422 CWE-648 CWE-781 CWE-782
+insecure-permissions :: CWE-276 CWE-277 CWE-278 CWE-279 CWE-280 CWE-281 CWE-282 CWE-283 CWE-378 CWE-379 CWE-560 CWE-708 CWE-732
+auth-flaws :: CWE-287 CWE-288 CWE-289 CWE-294 CWE-301 CWE-303 CWE-304 CWE-305 CWE-306 CWE-308 CWE-309 CWE-620 CWE-654 CWE-836 CWE-1390
+identity-spoofing :: CWE-290 CWE-291 CWE-293 CWE-348 CWE-350 CWE-940 CWE-1293
+password-attacks :: CWE-262 CWE-263 CWE-307 CWE-521 CWE-1391
+account-lockout :: CWE-645
+password-reset-poisoning :: CWE-640
+physical-access :: CWE-549 CWE-1263 CWE-1266
+weak-password-storage :: CWE-256 CWE-257 CWE-261 CWE-328 CWE-759 CWE-760 CWE-916
+secrets-exposure :: CWE-13 CWE-258 CWE-259 CWE-260 CWE-318 CWE-321 CWE-522 CWE-531 CWE-540 CWE-541 CWE-547 CWE-555 CWE-615 CWE-798
+default-credentials :: CWE-1392 CWE-1393 CWE-1394
+tls-mitm :: CWE-5 CWE-295 CWE-296 CWE-297 CWE-298 CWE-299 CWE-300 CWE-311 CWE-319 CWE-322 CWE-370 CWE-523 CWE-593 CWE-599 CWE-757 CWE-923 CWE-941 CWE-1428
+weak-crypto-storage :: CWE-312 CWE-313 CWE-314 CWE-315 CWE-317 CWE-526 CWE-921 CWE-922
+cryptanalysis :: CWE-323 CWE-324 CWE-325 CWE-326 CWE-327 CWE-329 CWE-780 CWE-1204 CWE-1240
+insecure-randomness :: CWE-330 CWE-331 CWE-332 CWE-333 CWE-334 CWE-335 CWE-336 CWE-337 CWE-338 CWE-339 CWE-340 CWE-341 CWE-342 CWE-343 CWE-344 CWE-1241
+session-hijacking :: CWE-6 CWE-384 CWE-613 CWE-614 CWE-1004 CWE-1275
+signature-spoofing :: CWE-345 CWE-347 CWE-353 CWE-354 CWE-924
+client-trust :: CWE-302 CWE-360 CWE-471 CWE-472 CWE-565 CWE-602 CWE-603 CWE-642 CWE-649 CWE-784 CWE-807
+csrf :: CWE-352
+content-spoofing :: CWE-356 CWE-357 CWE-446 CWE-447 CWE-448 CWE-449 CWE-450 CWE-451
+phishing :: CWE-1007
+clickjacking :: CWE-1021
+open-redirect :: CWE-601 CWE-1022
+race-conditions :: CWE-362 CWE-363 CWE-364 CWE-366 CWE-367 CWE-368 CWE-412 CWE-413 CWE-414 CWE-421 CWE-432 CWE-479 CWE-543 CWE-558 CWE-567 CWE-609 CWE-662 CWE-663 CWE-667 CWE-689 CWE-764 CWE-765 CWE-820 CWE-821 CWE-828 CWE-831 CWE-832 CWE-833 CWE-837 CWE-1265
+logic-flaws :: CWE-372 CWE-841
+code-quality ::CWE-374 CWE-375 CWE-382 CWE-383 CWE-245 CWE-246 CWE-386 CWE-430 CWE-431 CWE-435 CWE-439 CWE-440 CWE-462 CWE-463 CWE-464 CWE-474 CWE-475 CWE-477 CWE-478 CWE-480 CWE-481 CWE-482 CWE-483 CWE-484 CWE-486 CWE-487 CWE-491 CWE-492 CWE-493 CWE-495 CWE-496 CWE-498 CWE-500 CWE-546 CWE-561 CWE-563 CWE-568 CWE-570 CWE-571 CWE-572 CWE-573 CWE-574 CWE-575 CWE-576 CWE-577 CWE-578 CWE-579 CWE-580 CWE-581 CWE-582 CWE-583 CWE-584 CWE-585 CWE-586 CWE-589 CWE-594 CWE-595 CWE-597 CWE-605 CWE-607 CWE-608 CWE-628 CWE-664 CWE-666 CWE-670 CWE-672 CWE-675 CWE-683 CWE-684 CWE-685 CWE-686 CWE-687 CWE-688 CWE-691 CWE-694 CWE-696 CWE-697 CWE-705 CWE-706 CWE-710 CWE-758 CWE-766 CWE-767 CWE-768 CWE-783 CWE-1023 CWE-1024 CWE-1025 CWE-1041 CWE-1042 CWE-1043 CWE-1044 CWE-1045 CWE-1046 CWE-1047 CWE-1048 CWE-1049 CWE-1050 CWE-1051 CWE-1052 CWE-1053 CWE-1054 CWE-1055 CWE-1056 CWE-1057 CWE-1058 CWE-1059 CWE-1060 CWE-1061 CWE-1062 CWE-1063 CWE-1064 CWE-1065 CWE-1066 CWE-1067 CWE-1068 CWE-1069 CWE-1070 CWE-1071 CWE-1072 CWE-1073 CWE-1074 CWE-1075 CWE-1076 CWE-1078 CWE-1079 CWE-1080 CWE-1082 CWE-1083 CWE-1084 CWE-1085 CWE-1086 CWE-1087 CWE-1089 CWE-1090 CWE-1091 CWE-1092 CWE-1093 CWE-1094 CWE-1095 CWE-1096 CWE-1097 CWE-1098 CWE-1099 CWE-1100 CWE-1101 CWE-1102 CWE-1103 CWE-1105 CWE-1106 CWE-1107 CWE-1108 CWE-1109 CWE-1110 CWE-1111 CWE-1112 CWE-1113 CWE-1114 CWE-1115 CWE-1116 CWE-1117 CWE-1118 CWE-1119 CWE-1120 CWE-1121 CWE-1122 CWE-1123 CWE-1124 CWE-1126 CWE-1127 CWE-1164 CWE-1176 CWE-1177 CWE-1235 CWE-1249
+error-handling :: CWE-248 CWE-252 CWE-253 CWE-390 CWE-391 CWE-392 CWE-393 CWE-394 CWE-395 CWE-396 CWE-397 CWE-455 CWE-460 CWE-544 CWE-600 CWE-617 CWE-636 CWE-703 CWE-754 CWE-755
+dos :: CWE-400 CWE-401 CWE-404 CWE-405 CWE-406 CWE-408 CWE-410 CWE-606 CWE-770 CWE-771 CWE-772 CWE-773 CWE-774 CWE-775 CWE-789 CWE-799 CWE-834 CWE-835 CWE-920 CWE-1088 CWE-1322 CWE-1325
+parser-bomb-dos :: CWE-407 CWE-409 CWE-674 CWE-776 CWE-1333
+dll-hijacking :: CWE-114 CWE-426 CWE-427 CWE-428
+request-smuggling :: CWE-444
+protocol-manipulation :: CWE-436 CWE-437
+ssrf :: CWE-441 CWE-610 CWE-918
+security-misconfiguration :: CWE-8 CWE-9 CWE-11 CWE-453 CWE-520 CWE-556 CWE-1188 CWE-1269 CWE-1327
+env-config-manipulation :: CWE-15 CWE-454
+update-hijack :: CWE-494
+microservice-trust :: CWE-501
+malware-delivery :: CWE-506 CWE-507 CWE-508 CWE-509 CWE-510 CWE-511 CWE-512
+insecure-deserialization :: CWE-499 CWE-502
+idor :: CWE-566 CWE-639
+xxe :: CWE-611 CWE-827
+insecure-design :: CWE-358 CWE-637 CWE-653 CWE-655 CWE-656 CWE-657 CWE-671 CWE-693 CWE-1125
+toolchain-hardening :: CWE-14 CWE-733 CWE-1037 CWE-1038
+insufficient-logging :: CWE-221 CWE-222 CWE-223 CWE-224 CWE-778 CWE-779
+malicious-package :: CWE-829
+third-party-js :: CWE-830
+mass-assignment :: CWE-915
+ssti :: CWE-917 CWE-1336
+mobile-ipc-abuse :: CWE-925 CWE-926 CWE-927 CWE-939
+cors-misconfig :: CWE-346 CWE-942
+csv-formula-injection :: CWE-1236
+prototype-pollution :: CWE-1321
+vulnerable-dependencies :: CWE-1104 CWE-1357 CWE-1395
+websocket-hijacking :: CWE-1385
+prompt-injection :: CWE-1426 CWE-1427
+ai-agent-security :: CWE-1039 CWE-1434
+bot-automation :: CWE-804
+container-escape :: CWE-243
+code-signing-abuse :: CWE-1291
+hardware-attacks :: CWE-1189 CWE-1190 CWE-1191 CWE-1192 CWE-1193 CWE-1209 CWE-1221 CWE-1222 CWE-1223 CWE-1224 CWE-1231 CWE-1232 CWE-1233 CWE-1234 CWE-1239 CWE-1242 CWE-1243 CWE-1244 CWE-1245 CWE-1246 CWE-1247 CWE-1248 CWE-1250 CWE-1251 CWE-1252 CWE-1253 CWE-1254 CWE-1256 CWE-1257 CWE-1258 CWE-1259 CWE-1260 CWE-1261 CWE-1262 CWE-1264 CWE-1267 CWE-1268 CWE-1270 CWE-1271 CWE-1272 CWE-1273 CWE-1274 CWE-1276 CWE-1277 CWE-1278 CWE-1279 CWE-1281 CWE-1282 CWE-1283 CWE-1290 CWE-1292 CWE-1294 CWE-1296 CWE-1298 CWE-1299 CWE-1301 CWE-1302 CWE-1304 CWE-1310 CWE-1311 CWE-1312 CWE-1313 CWE-1314 CWE-1315 CWE-1316 CWE-1317 CWE-1318 CWE-1319 CWE-1320 CWE-1326 CWE-1328 CWE-1329 CWE-1330 CWE-1331 CWE-1332 CWE-1334 CWE-1338 CWE-1351 CWE-1384 CWE-1429 CWE-1431
+hardware-supply-chain :: CWE-1297
+injection-generic :: CWE-97
+memory-corruption :: CWE-622 CWE-665 CWE-826 CWE-910 CWE-911
+info-disclosure :: CWE-651 CWE-1295
+env-config-manipulation :: CWE-673
+code-quality :: CWE-1229
